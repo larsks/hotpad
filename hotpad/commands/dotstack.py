@@ -16,9 +16,9 @@ def parse_args():
 
     p.add_argument('--api-version',
                    default='1')
+    p.add_argument('--output', '-o')
 
     p.add_argument('stack')
-    p.add_argument('output', nargs='?')
 
     return p.parse_args()
 
@@ -60,7 +60,9 @@ def main():
     ks = get_ksclient(args)
     s = Stack(args.stack, ksclient=ks)
 
-    output_dot(s)
+    with open(args.output, 'w') if args.output else sys.stdout as fd:
+        sys.stdout = fd
+        output_dot(s)
 
 if __name__ == '__main__':
     main()
