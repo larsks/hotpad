@@ -14,6 +14,7 @@ setup(
     entry_points = {
         'console_scripts': [
             'heat-output = hotpad.commands.heat_output:main',
+            'dotstack = hotpad.commands.dotstack:main',
         ],
     }
 )
