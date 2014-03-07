@@ -6,48 +6,28 @@ import os
 import sys
 import argparse
 import yaml
-import logging
 
 from hotpad.keystone import Keystone
 from hotpad.stack import Stack
+from hotpad.commands.command import \
+    create_parser, \
+    setup_logging, \
+    get_ksclient
 
 def parse_args():
-    p = argparse.ArgumentParser()
+    p = create_parser()
 
-    p.add_argument('--debug', action='store_const',
-                   dest='loglevel', const=logging.DEBUG)
-    p.add_argument('--quiet', action='store_const',
-                   dest='loglevel', const=logging.WARN)
-    p.add_argument('--os-username')
-    p.add_argument('--os-tenant-name')
-    p.add_argument('--os-password')
-    p.add_argument('--os-auth-url')
-    p.add_argument('--os-region-name')
     p.add_argument('--api-version',
                    default='1')
 
     p.add_argument('stack')
     p.add_argument('output', nargs='?')
 
-    p.set_defaults(loglevel=logging.INFO)
-
     return p.parse_args()
-
-def get_ksclient(args):
-    kwargs = {
-        'auth_url': args.os_auth_url,
-        'tenant_name': args.os_tenant_name,
-        'username': args.os_username,
-        'password': args.os_password,
-        'region_name': args.os_region_name,
-    }
-    return Keystone(**kwargs)
 
 def main():
     args = parse_args()
-
-    logging.basicConfig(
-        level = args.loglevel)
+    setup_logging(args)
 
     ks = get_ksclient(args)
     s = Stack(args.stack, ksclient=ks)
