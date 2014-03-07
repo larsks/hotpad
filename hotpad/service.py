@@ -1,12 +1,15 @@
 from __future__ import absolute_import
 
+from .logger import Logger
 from .keystone import Keystone
 
-class Service (object):
+class Service (Logger):
     service_type = None
     endpoint_type = 'publicURL'
 
-    def __init__(self, ksclient):
+    def __init__(self, ksclient=None):
+        super(Service, self).__init__()
+
         if ksclient is None:
             ksclient = Keystone()
 

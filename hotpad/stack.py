@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+import logging
+
 from keystoneclient.v2_0 import client as ksclient
 from heatclient import client as heatclient
 
@@ -9,12 +11,12 @@ class Stack (Service):
     service_type = 'orchestration'
     api_version = '1'
 
-    def __init__(self, stackname, ksclient=None):
+    def __init__(self, stackname, *args, **kwargs):
         self._stack = None
         self._heat = None
         self.name = stackname
 
-        super(Stack, self).__init__(ksclient)
+        super(Stack, self).__init__(*args, **kwargs)
         
         self.setup_heatclient()
         self.get_stack()
