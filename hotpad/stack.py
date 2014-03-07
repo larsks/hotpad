@@ -30,13 +30,29 @@ class Stack (Service):
     def get_stack(self):
         self._stack = self._heat.stacks.get(self.name)
 
+    def resource(self, name):
+        assert self._stack is not None
+        return self._heat.resources.get(self.stack['id'],
+                                        name)
+    
+    @property
+    def parameters(self):
+        assert self._stack is not None
+        return self._stack.parameters
+
+    @property
+    def resources(self):
+        assert self._stack is not None
+        return self._heat.resources.list(stack_id=self.stack['id'])
+
     @property
     def stack(self):
+        assert self._stack is not None
         return self._stack.to_dict()
 
     @property
     def outputs(self):
-        assert(self._stack is not None)
+        assert self._stack is not None
         return dict((o['output_key'], o['output_value']) 
                     for o in self.stack['outputs'])
 
