@@ -13,19 +13,19 @@ from hotpad.commands.command import \
 
 def parse_args():
     p = create_parser()
-
-    p.add_argument('--api-version',
-                   default='1')
     p.add_argument('--output', '-o')
-
     p.add_argument('stack')
 
     return p.parse_args()
 
 def make_hex_color(c):
+    '''Converts an (R,G,B) tuple to the hex equivalent for use
+    in the dot file.'''
     return '#{:02x}{:02x}{:02x}'.format(*(int(255*x) for x in c))
 
 def output_dot(s):
+    '''Produce a dot representation of a stack's resource relationships,
+    with automatic coloring of nodes by resource type.'''
     nodes = []
     edges = []
     restypes = {}

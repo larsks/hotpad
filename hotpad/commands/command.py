@@ -6,6 +6,9 @@ import argparse
 from hotpad.keystone import Keystone
 
 def create_parser():
+    '''Default command line parser for hotpad commands.  Includes
+    all the openstack credential options.'''
+
     p = argparse.ArgumentParser()
 
     p.add_argument('--debug', action='store_const',
@@ -24,10 +27,14 @@ def create_parser():
     return p
 
 def setup_logging(args):
+    '''Set up logging at the appropriate log level
+    as determined by command line options.'''
+
     logging.basicConfig(
         level = args.loglevel)
 
 def get_ksclient(args):
+    '''Return a Keystone object based on the current credentials.'''
     return Keystone(
         auth_url=args.os_auth_url,
         tenant_name=args.os_tenant_name,
